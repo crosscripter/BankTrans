@@ -1,31 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using System.IO;
+using System.Linq;
 using System.Diagnostics;
+using System.Collections.Generic;
 
-namespace com.ingentek.DeveloperExercises {
-   
+namespace BankTrans
+{
     /// <summary>
     /// Banking Transaction Processing Application
     /// Create/Develop a tool that will take a file (containing: current customer accounts & balances) and
     /// combine it with a second file(containing: transaction records) and in turn produce a third file that will
     /// contain the current state of those accounts.
     /// </summary>
-    class BankingTransactionApplication {
-
+    class BankingTransactionApplication
+    {
         // Setup window size
         // Clear screen of output
         // and print a fancy header
-        static void Initialize() {
+        static void Initialize()
+        {
             Console.Title = "BankTrans - Banking Transaction Processing Application";
-                Console.Clear();
-                Console.WindowWidth = 85;
-                Console.WindowHeight = 30;
-                Console.WriteLine(@"
+            Console.Clear();
+            Console.WindowWidth = 85;
+            Console.WindowHeight = 30;
+            Console.WriteLine(@"
 
  /$$$$$$$                      /$$    /$$$$$$$$                                    
 | $$__  $$                    | $$   |__  $$__/                                    
@@ -38,17 +36,17 @@ namespace com.ingentek.DeveloperExercises {
 
 
                     Banking Transaction Processing Application 
-            Created by Michael Schutt for the InGen Developer Exercise
-
+                            Created by Michael Schutt
 
                 ");
         }
 
-        static void Main(string[] args) {
-
+        static void Main(string[] args)
+        {
             // Check for the correct number of command line arguments 
             // If not found then show the usage on the console:
-            if (args.Length != 4) {
+            if (args.Length != 4)
+            {
                 Console.WriteLine(@"
     
     Usage: banktrans.exe <transactions file> <accounts file> <output file> <error file>
@@ -110,14 +108,18 @@ namespace com.ingentek.DeveloperExercises {
              */
             int transactionCounter = 1;
 
-            foreach (var transaction in transactions) {
+            foreach (var transaction in transactions)
+            {
                 int source = transaction.Source;
                 int destination = transaction.Destination;
 
                 // Check for invalid account numbers.
-                if (!accountMap.ContainsKey(source)) {
+                if (!accountMap.ContainsKey(source))
+                {
                     Trace.TraceError(new InvalidAccountNumberException(source).Message);
-                } else if (!accountMap.ContainsKey(destination)) {
+                }
+                else if (!accountMap.ContainsKey(destination))
+                {
                     Trace.TraceError(new InvalidAccountNumberException(destination).Message);
                 }
 
@@ -130,27 +132,33 @@ namespace com.ingentek.DeveloperExercises {
                 Console.WriteLine("Processing transaction {0} of {1}: ", transactionCounter++, transactions.Count());
 
                 // Log out processing and catch any AccountExceptions:
-                try {
+                try
+                {
                     Console.WriteLine("Withdrawing {0:C2} from {1} account #{2}...", amount, sourceAccount.Type, sourceAccount.Number);
                     sourceAccount.Withdraw(amount);
 
                     Console.WriteLine("Depositing {0:C2} into {1} account #{2}", amount, destinationAccount.Type, destinationAccount.Number);
                     destinationAccount.Deposit(amount);
-                } catch (AccountException e) {
+                }
+                catch (AccountException e)
+                {
                     Trace.TraceError(e.Message);
                 }
             }
 
             /*
-            * Your program should output a file containing the final state of all the accounts.
+            * The program should output a file containing the final state of all the accounts.
             * It should be in the same format as "accounts.dat" described below.
             * However, the account numbers should be in numeric order from least to greatest
             */
             string output = string.Join(Environment.NewLine, accountMap.Values);
 
-            try {
+            try
+            {
                 File.WriteAllText(outputFile, output);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Trace.TraceError(e.Message);
             }
         }

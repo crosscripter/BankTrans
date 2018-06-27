@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace com.ingentek.DeveloperExercises {
+namespace BankTrans
+{
     // Specialized the CSVFile base class by allowing reading
     // of each line as a Transaction object instead of generic
     // T objects or strings
-    class TransactionFile : CSVFile {
-
+    class TransactionFile : CSVFile
+    {
         public TransactionFile(string path) : base(path) { }
 
         // Parses each line of text or record into a Transaction
-        private Transaction Parse(string line) {
-
+        private Transaction Parse(string line)
+        {
             // Split line into fields 
             string[] fields = line.Split(',');
 
@@ -29,7 +26,8 @@ namespace com.ingentek.DeveloperExercises {
 
         // Overrides the CSVFile.Read() method to return 
         // an enumerable of Transaction objects instead.
-        new public IEnumerable<Transaction> Read() {
+        new public IEnumerable<Transaction> Read()
+        {
             return Read(Parse);
         }
     }
